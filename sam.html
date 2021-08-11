@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+  <title>Survey Dashboard</title>
+  <style>
+    .gradient-1 {
+      background: linear-gradient(45deg, #59bcff 21%, #59d7ff 100%);
+    }
+
+    .gradient-4 {
+      background: linear-gradient(45deg, #ff6d59 0%, #ffd584 100%);
+    }
+
+    .gradient-2 {
+      background: linear-gradient(45deg, #4ad994 0%, #57f998 100%);
+    }
+
+    .gradient-3 {
+      background: linear-gradient(45deg, #fdb765 0%, #ffe485 100%);
+    }
+
+
+    .card {
+      margin-bottom: 1.875rem;
+      background-color: #fff;
+      transition: all .5s ease-in-out;
+      position: relative;
+      border: 0rem solid transparent;
+      border-radius: 1.375rem;
+      box-shadow: 0rem 0.3125rem 0.3125rem 0rem rgb(82 63 105 / 5%);
+      height: calc(100% - 2rem);
+    }
+
+    table tr th {
+      width: calc(100%-2em) !important;
+    }
+
+    /* .logout:hover{
+      font-size:1.1rem;
+    } */
+  </style>
+</head>
+
+<body style="">
+  <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><b>Survey Dashboard</b></a>
+      <h6 class="logout" onclick="logout()" style="cursor: pointer;">Logout</h6>
+    </div>
+  </nav> -->
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><b>Survey Dashboard</b></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="d-flex ms-auto me-auto">
+          <p class="text-center">
+            <a href="all_view.html" accesskey="a" style="text-decoration: none;
+            margin-right: 20px;
+            font-size: 18px;
+            color: black;
+            border: 1px solid #f1f1f1;
+            padding: 9px;">ALL View</a>
+            <a href="sam.html" style="text-decoration: none;
+            margin-right: 20px;
+            font-size: 18px;
+            color: black;
+            border: 1px solid #f1f1f1;
+            padding: 9px;" accesskey="s">SAM View</a>
+
+          </p>
+        </div>
+        <h6 class="logout" onclick="logout()" style="cursor: pointer;">Logout</h6>
+      </div>
+    </div>
+  </nav>
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col-6">
+        <div class="">
+          <div class="" style="position: relative;">
+            <p style="position: absolute;top: 46%;
+          left: 33%;
+          z-index: 999999999999999999999999999999;text-align:center;font-size:13px">Total Samples<br><span
+                id="total_samples"></span></p>
+            <div id="total_samples_chart" style="width: 100%;height: 400px;color:black"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="">
+          <div class="" style="position: relative;">
+            <p style="position: absolute;top: 46%;
+          left: 33%;
+          z-index: 999999999999999999999999999999;text-align:center;font-size:12px">Today Samples<br><span
+                id="todays_samples"></span></p>
+            <div id="today_samples_chart" style="width: 100%;height: 400px;color:black"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <div class="">
+          <div class="" style="position: relative;">
+            <p style="position: absolute;top: 45%;
+          left: 30%;
+          z-index: 999999999999999999999999999999;text-align:center;font-size:11px">Total<br><span
+                id="total_gender"></span></p>
+            <div id="gender_chart" style="width: 100%;height: 250px;color:black"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="">
+          <div class="" style="position: relative;">
+            <p style="position: absolute;top: 45%;
+          left: 28%;
+          z-index: 999999999999999999999999999999;text-align:center;font-size:11px">Total<br><span
+                id="total_caste"></span></p>
+            <div id="caste_chart" style="width: 100%;height: 250px;color:black"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="">
+          <div class="" style="position: relative;">
+            <p style="position: absolute;top: 45%;
+          left: 31%;
+          z-index: 999999999999999999999999999999;text-align:center;font-size:11px">Total<br><span
+                id="total_age"></span></p>
+            <div id="age_chart" style="width: 100%;height: 250px;color:black"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br><br><br><br>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="">
+          <div class="" style="position: relative;">
+            <div id="chart_div" style="width: 100%; height: 500px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br>
+  <div class="container my-2">
+    <div class="row">
+      <div class="card">
+        <div class="card-body">
+          <div>
+            <h4 class="" style="float:left">Team Sample Details</h4>
+            <input id="myInput" class="" style="float:right;
+          border: none;
+          box-shadow: 0px 0px 2px #d1d1d1;
+          border-radius: 50px;
+          padding-left: 10px;" type="text" placeholder="Search..."><i class="flaticon-381-search-2"></i>
+          </div>
+          <br><br>
+          <div class="table-responsive">
+            <table class="table text-center" id="sm_view_table1" style="box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%)">
+              <thead class="" style="background-color: #e7f1ff; color: #0c63e4" id="sm_view_table">
+                <tr>
+                  <th scope="col">Team</th>
+                  <th scope="col">AM Name</th>
+                  <th scope="col">AC Name</th>
+                  <th scope="col">Total Sample</th>
+                  <th scope="col">Todays Sample</th>
+                  <th scope="col">Last Sample Time</th>
+                </tr>
+              </thead>
+              <tbody id="sam_team_table"></tbody>
+            </table>
+            <center> <img class="my-2 " src="loader.gif" id="loader" style="width: 20%;"></center>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+  </script>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+
+  </script>
+
+
+  <script>
+    var urla = '';
+
+    function a() {
+      // console.log(window.location.href.charAt(7));
+      if (window.location.href.charAt(8) == 3) {
+        urla = "https://35.154.142.248/";
+      } else {
+        urla =  "https://shielded-forest-68279.herokuapp.com/"
+      }
+      localStorage.getItem("token");
+      // console.log(localStorage.getItem("token"));
+
+      if (localStorage.getItem("token") == null || localStorage.getItem("token") == "" || localStorage.getItem(
+          "token") == undefined || localStorage.getItem("token") == "null") {
+        // alert(localStorage.getItem("token"));
+        window.location.replace("./login.html");
+      }
+
+      if (localStorage.getItem("role_id") == 3) {
+        window.location.replace("./am.html");
+      }
+    }
+    a();
+
+    function logout() {
+      localStorage.setItem("token", null);
+      window.location.reload();
+    }
+  </script>
+
+  <!-- Get Total Sample Count -->
+  <script>
+    $.ajax({
+      url: urla+"api/v1/sam/samples_count",
+      type: "GET",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      success: function (result) {
+        // console.log(result);
+        if (result.error) {
+          // console.log(result.error);
+        } else {
+          var q = (result.total_valid[0] / result.all_total[0]) * 100;
+          var w = Math.floor(q);
+
+          var e = (result.todays_valid[0] / result.todays_total[0]) * 100;
+          var r = Math.floor(e);
+          var t = result.all_total[0] - result.total_valid[0];
+          var y = 100 - w;
+          var u = result.todays_total[0] - result.todays_valid[0];
+          var i = 100 - r;
+          document.querySelector("#total_samples").innerHTML =
+            result.all_total[0];
+
+          document.querySelector("#todays_samples").innerHTML =
+            result.todays_total[0];
+          google.charts.load("current", {
+            packages: ["corechart"]
+          });
+          google.charts.setOnLoadCallback(drawChart);
+
+          function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['samples', 'count'],
+              // [ result.total_valid[0]+ ' (' +w +'%)', w],
+              // [ t+ ' (' + y+'%)', y]
+              ['Valid :' + result.total_valid[0] + ' (' + w + '%)', w],
+              ['Invalid :' + t + ' (' + y + '%)', y]
+            ]);
+
+            var options = {
+              title: 'Total Samples ',
+              pieHole: 0.4,
+              pieSliceText: 'label',
+              pieSliceTextStyle: {
+                fontSize: 12
+              },
+              tooltip: {
+                text: 'value'
+              }
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('total_samples_chart'));
+            chart.draw(data, options);
+          }
+          google.charts.load("current", {
+            packages: ["corechart"]
+          });
+          google.charts.setOnLoadCallback(drawChart1);
+
+          function drawChart1() {
+            var data = google.visualization.arrayToDataTable([
+              ['samples', 'count'],
+              ['Valid :' + result.todays_valid[0] + ' (' + r + '%)', w],
+              ['Invalid :' + u + ' (' + i + '%)', i]
+            ]);
+
+            var options = {
+              title: 'Total Samples ',
+              pieHole: 0.4,
+              pieSliceText: 'label',
+              pieSliceTextStyle: {
+                fontSize: 12
+              },
+              tooltip: {
+                text: 'value'
+              }
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('today_samples_chart'));
+            chart.draw(data, options);
+          }
+        }
+      },
+    });
+  </script>
+
+  <!-- Get Gender Cut Table -->
+  <script>
+    $.ajax({
+      url:  urla+"api/v1/sam/gender_cut",
+      type: "GET",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      success: function (result) {
+        var male_count = result.query[0][0];
+        var female_count = result.query[0][1];
+        var others_count = result.query[0][2];
+        var gender_total_count = result.query[0][3];
+        var s = (male_count / gender_total_count) * 100;
+        var d = (female_count / gender_total_count) * 100;
+        var male_per = Math.floor(s);
+        var female_per = Math.floor(d);
+        if (others_count == 0) {
+          other_per = 0;
+        } else {
+          var f = (result.query[0][2] / result.query[0][3]) * 100;
+          var others_per = Math.floor(f);
+        }
+        document.getElementById("total_gender").innerHTML = gender_total_count;
+        google.charts.load("current", {
+          packages: ["corechart"]
+        });
+        google.charts.setOnLoadCallback(drawChart2);
+
+        function drawChart2() {
+          var data = google.visualization.arrayToDataTable([
+            ['Gender', 'count'],
+            ['Male :' + male_count + ' (' + male_per + '%)', male_per],
+            ['Female :' + female_count + ' (' + female_per + '%)', female_per],
+            ['others :' + others_count + ' (' + others_per + '%)', others_per],
+          ]);
+
+          var options = {
+            title: 'Gender View',
+            pieHole: 0.4,
+            pieSliceText: 'label',
+            pieSliceTextStyle: {
+              fontSize: 11
+            },
+            pieStartAngle: 55,
+            tooltip: {
+              text: 'value'
+            },
+            chartArea: {
+              width: '85%'
+            }
+          };
+          var chart = new google.visualization.PieChart(document.getElementById('gender_chart'));
+          chart.draw(data, options);
+        }
+      },
+    });
+  </script>
+  <!-- Get Caste Cut Table -->
+  <script>
+    $.ajax({
+      url:  urla+"api/v1/sam/caste_cut",
+      type: "GET",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      success: function (result) {
+        // console.log(result);
+        var jatav_count = result.query[0][0];
+        var none_jatav_count = result.query[0][1];
+        var non_yadav_count = result.query[0][2];
+        var genral_count = result.query[0][3];
+        var yadav_count = result.query[0][4];
+        var muslim_count = result.query[0][5];
+        var others_count = result.query[0][6];
+        var caste_total_count = result.query[0][7];
+        document.getElementById("total_caste").innerHTML = caste_total_count;
+        var jatav_per = Math.floor((result.query[0][0] / result.query[0][7]) * 100);
+        var none_jatav_per = Math.floor((result.query[0][1] / result.query[0][7]) * 100);
+        var non_yadav_per = Math.floor((result.query[0][2] / result.query[0][7]) * 100);
+        var genral_per = Math.floor((result.query[0][3] / result.query[0][7]) * 100);
+        var yadav_per = Math.floor((result.query[0][4] / result.query[0][7]) * 100);
+        var muslim_per = Math.floor((result.query[0][5] / result.query[0][7]) * 100);
+        var others_per = Math.floor((result.query[0][6] / result.query[0][7]) * 100);
+        google.charts.load("current", {
+          packages: ["corechart"]
+        });
+        google.charts.setOnLoadCallback(drawChart3);
+
+        function drawChart3() {
+          var data = google.visualization.arrayToDataTable([
+            ['caste', 'count'],
+            ['Jatav	:' + ' ' + jatav_count + ' (' + jatav_per + '%)', jatav_per],
+            ['Non Jatav SC :' + ' ' + none_jatav_count + ' (' + none_jatav_per + '%)', none_jatav_per],
+            ['Non Yadav OBC :' + ' ' + non_yadav_count + ' (' + non_yadav_per + '%)', non_yadav_per],
+            ['General :' + ' ' + genral_count + ' (' + genral_per + '%)', genral_per],
+            ['Yadav :' + ' ' + yadav_count + ' (' + yadav_per + '%)', yadav_per],
+            ['Muslim :' + ' ' + muslim_count + ' (' + muslim_per + '%)', muslim_per],
+            ['Others :' + ' ' + others_count + ' (' + others_per + '%)', others_per]
+          ]);
+
+          var options = {
+            title: 'Caste View',
+            pieHole: 0.4,
+            pieSliceText: 'label',
+            pieSliceTextStyle: {
+              fontSize: 11
+            },
+            pieStartAngle: 55,
+            chartArea: {
+              width: '95%'
+            },
+            tooltip: {
+              text: 'value'
+            }
+          };
+
+
+          var chart = new google.visualization.PieChart(document.getElementById('caste_chart'));
+          chart.draw(data, options);
+        }
+      },
+    });
+  </script>
+
+  <!-- Get Age Cut Table -->
+  <script>
+    $.ajax({
+      url:  urla+"api/v1/sam/age_cut_1",
+      type: "GET",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      success: function (result) {
+        // console.log(result);
+        var ag1_per = Math.floor((result.query[0][0] / result.query[0][5]) * 100);
+        var ag2_per = Math.floor((result.query[0][1] / result.query[0][5]) * 100);
+        var ag3_per = Math.floor((result.query[0][2] / result.query[0][5]) * 100);
+        var ag4_per = Math.floor((result.query[0][3] / result.query[0][5]) * 100);
+        var ag5_per = Math.floor((result.query[0][4] / result.query[0][5]) * 100);
+        document.getElementById("total_age").innerHTML = result.query[0][5];
+        google.charts.load("current", {
+          packages: ["corechart"]
+        });
+        google.charts.setOnLoadCallback(drawChart4);
+
+        function drawChart4() {
+          var data = google.visualization.arrayToDataTable([
+            ['age', 'count'],
+            ['18-23	:' + ' ' + result.query[0][0] + ' (' + ag1_per + '%)', ag1_per],
+            ['24-35 :' + ' ' + result.query[0][1] + ' (' + ag2_per + '%)', ag2_per],
+            ['36-50 :' + ' ' + result.query[0][2] + ' (' + ag3_per + '%)', ag3_per],
+            ['51-60 :' + ' ' + result.query[0][3] + ' (' + ag4_per + '%)', ag4_per],
+            ['60+ :' + ' ' + result.query[0][4] + ' (' + ag5_per + '%)', ag5_per]
+          ]);
+          var options = {
+            title: 'Age View',
+            pieHole: 0.4,
+            pieSliceText: 'label',
+            pieSliceTextStyle: {
+              fontSize: 11
+            },
+            chartArea: {
+              width: '80%'
+            },
+            tooltip: {
+              text: 'value'
+            },
+            pieStartAngle: 180
+          };
+          var chart = new google.visualization.PieChart(document.getElementById('age_chart'));
+          chart.draw(data, options);
+        }
+      },
+    });
+  </script>
+
+  <!-- Get Teams Table -->
+  <script>
+    let teamTableRows = [{
+        id: "TL01",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL02",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null",
+
+      },
+      {
+        id: "TL03",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null",
+      },
+      {
+        id: "TL04",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL05",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL06",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL07",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL08",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL09",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL10",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL11",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL12",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL13",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL14",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL15",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL16",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL17",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL18",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL19",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL20",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL21",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL22",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL23",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL24",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL25",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL26",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL27",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL28",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL29",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL30",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL31",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL32",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL33",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL34",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL35",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL36",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL37",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL38",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL39",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL40",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL41",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL42",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL43",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL44",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL45",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL46",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL47",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL48",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL49",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+      {
+        id: "TL50",
+        total_sample: 0,
+        todays_sample: 0,
+        sample_time: 0,
+        ac_name: 0,
+        am: "Null"
+      },
+    ];
+
+    $.ajax({
+      url:  urla+"api/v1/sam/total_samples_count_team",
+      type: "GET",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      success: function (result) {
+        if (result.error) {
+          // console.log(result.error);
+        } else {
+          teamTableRows.map((trow) => {
+            let match = result.query.find((e) => e[0] === trow.id);
+
+            if (match) {
+              trow.total_sample = match[1];
+            }
+          });
+          getTodaysSamples();
+        }
+      },
+    });
+
+    function getTodaysSamples() {
+      $.ajax({
+        url:  urla+"api/v1/sam/todays_samples_count_team",
+        type: "GET",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+        success: function (result) {
+          if (result.error) {
+            // console.log(result.error);
+          } else {
+            teamTableRows.map((trow) => {
+              let match = result.query.find((e) => e[0] === trow.id);
+              if (match) {
+                trow.todays_sample = match[1];
+              }
+            });
+            getSampleTime();
+          }
+        },
+      });
+    }
+
+    function getSampleTime() {
+      $.ajax({
+        url:  urla+"api/v1/sam/last_sample_time_team",
+        type: "GET",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+        success: function (result) {
+          if (result.error) {
+            // console.log(result.error);
+          } else {
+            teamTableRows.map((trow) => {
+              let match = result.query.find((e) => e[2] === trow.id);
+              if (match) {
+                trow.sample_time = match[1];
+                trow.ac_name = match[0];
+              }
+            });
+            getAm();
+          }
+        },
+      });
+    }
+
+    function getAm() {
+      $.ajax({
+        url:  urla+"api/v1/sam/am_id",
+        type: "GET",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+        success: function (result) {
+          $('#loader').hide();
+          if (result.error) {
+            // console.log(result.error);
+          } else {
+            teamTableRows.map((trow) => {
+              let match = result.query.find((e) => e[0] === trow.id);
+              if (match) {
+                trow.am = match[1]
+              }
+            });
+            showTable();
+          }
+        },
+      });
+    }
+
+    function showTable() {
+      //   var m = teamTableRows.sort(function(a, b){
+      //     return  b.sample_time - a.sample_time;
+
+      // });
+      // // console.log(m);
+
+      teamTableRows.forEach((row) => {
+        const columnsDta = `<td class="col-2"><a href="./index.html" id=${row.id} onclick="f(${row.id})" style="text-decoration:none" >${row.id}</a></td>
+          <td class="col-2">${row.am}</td>
+          <td class="col-2">${row.ac_name}</td>
+<td class="col-2">${row.total_sample}</td>
+<td class="col-2">${row.todays_sample}</td>
+<td class="col-2">${row.sample_time}</td>
+`;
+        const tableRow = document.createElement("tr");
+        tableRow.innerHTML = columnsDta;
+        document.querySelector("#sam_team_table").appendChild(tableRow);
+      });
+
+
+      sortTable();
+    }
+
+    function f(id) {
+      // console.log(id.id);
+      localStorage.setItem("uid", id.id);
+      window.location.replace("index.html");
+    }
+  </script>
+
+
+  <script>
+    $(document).ready(function () {
+      $("#myInput").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        // console.log(value);
+        $("#sam_team_table tr").filter(function () {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          // console.log($(this).toggle($(this).text().toLowerCase().indexOf(value) > -1))
+        });
+      });
+    });
+  </script>
+
+
+
+  <script>
+    function sortTable() {
+      // console.log("hi");
+      var table, rows, switching, i, x, y, shouldSwitch;
+      table = document.getElementById("sm_view_table1");
+      switching = true;
+      /*Make a loop that will continue until
+      no switching has been done:*/
+      while (switching) {
+        //start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /*Loop through all table rows (except the
+        first, which contains table headers):*/
+        for (i = 1; i < (rows.length - 1); i++) {
+          //start by saying there should be no switching:
+          shouldSwitch = false;
+          /*Get the two elements you want to compare,
+          one from current row and one from the next:*/
+          x = rows[i].getElementsByTagName("TD")[5];
+          y = rows[i + 1].getElementsByTagName("TD")[5];
+          //check if the two rows should switch place:
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            //if so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        }
+        if (shouldSwitch) {
+          /*If a switch has been marked, make the switch
+          and mark that a switch has been done:*/
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+        }
+      }
+    }
+  </script>
+  <script>
+    function qwe() {
+      $.ajax({
+        url:  urla+"api/v1/_fa_view/home_page_chart",
+        type: "GET",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+        success: function (result) {
+          // console.log(typeof (result[0][3]));
+          var q = [
+            ['Date', 'Total_samples', 'Unique_agents', 'Unique_teams', 'Average']
+          ]
+          for (i = 0; i < result.length; i++) {
+            var e = parseInt(result[i][3]);
+            q.push([result[i][4], result[i][0], result[i][1], result[i][2], e])
+          }
+          // console.log(JSON.stringify(q));
+          google.charts.load('current', {
+            'packages': ['corechart']
+          });
+          google.charts.setOnLoadCallback(drawVisualization);
+
+          function drawVisualization() {
+            // Some raw data (not necessarily accurate)
+            var data = google.visualization.arrayToDataTable(q);
+
+            var options = {
+              title: 'FAs Performance View',
+              vAxis: {
+                title: 'Unique_agents',
+              },
+              vAxes: {
+                1: {
+                  title: 'samples',
+
+                }
+              },
+
+              hAxis: {
+                title: 'Dates',
+              },
+
+              seriesType: 'bars',
+              series: {
+
+                3: {
+                  type: 'line',
+                  pointSize: 5,
+                },
+                0: {
+                  targetAxisIndex: 1,
+                  pointSize: 1,
+
+                }
+
+              },
+
+
+              chartArea: {
+                width: '85%'
+              }
+              // vAxis.minorGridlines.multiple
+            };
+            var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+          }
+        },
+      });
+
+    }
+
+    qwe();
+  </script>
+</body>
+
+</html>

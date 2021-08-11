@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="shortcut icon" href="survey.png" type="image/x-icon" />
+    <title>Survey Dashboard</title>
+    <script>
+        function a() {
+            if (localStorage.getItem("token") == "" || localStorage.getItem("token") == null || localStorage.getItem(
+                    "token") == undefined || localStorage.getItem("token") == "null") {
+                window.location.replace("login.html");
+            }
+        }
+        a();
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><b>Survey Dashboard</b></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="d-flex ms-auto me-auto">
+                    <p class="text-center">
+                        <a href="all_view.html" style="text-decoration: none;
+                margin-right: 20px;
+                font-size: 18px;
+                color: black;
+                border: 1px solid #f1f1f1;
+                padding: 9px;">ALL View</a>
+                        <a href="sam.html" style="text-decoration: none;
+                margin-right: 20px;
+                font-size: 18px;
+                color: black;
+                border: 1px solid #f1f1f1;
+                padding: 9px;" accesskey="s" id="view">SAM View</a>
+
+                    </p>
+                </div>
+                <h6 class="logout" onclick="logout()" style="cursor: pointer;">Logout</h6>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-2">
+        <div>
+            <h4 class="" style="float:left">ALL Details</h4>
+            <input id="myInput" class="" style="float:right;
+          border: none;
+          box-shadow: 0px 0px 2px #d1d1d1;
+          border-radius: 50px;
+          padding-left: 10px;" type="text" placeholder="Search..."><i class="flaticon-381-search-2"></i>
+        </div>
+        <br><br>
+        <div class="table-responsive">
+            <table class="table text-center" id="all_table_view1" style="box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%);">
+                <thead class="" style="background-color: #e7f1ff;color: #0c63e4;">
+                    <tr>
+                        <th scope="col">AM Id </th>
+                        <th scope="col">TL Id</th>
+                        <th scope="col">TL Name</th>
+                        <th scope="col">FA Id </th>
+                        <th scope="col">FA Name</th>
+                        <th scope="col">Status </th>
+                        <th scope="col">Last Sample Time</th>
+                    </tr>
+                </thead>
+                <tbody id="all_table">
+                </tbody>
+            </table>
+            <center> <img class="my-2 " src="loader.gif" id="loader" style="width: 20%;"></center>
+        </div>
+    </div>
+
+
+    <br><br><br><br><br><br><br><br><br>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <script>
+       var urla="";
+        function all() {
+            var url=" ";
+            if (window.location.href.charAt(8) == 3) {
+        urla = "https://35.154.142.248/api/v1/";
+      } else {
+        urla =  "https://shielded-forest-68279.herokuapp.com/api/v1/"
+      }
+
+
+            if (localStorage.getItem("role_id") == 4) {
+                document.getElementById("view").innerHTML = "SAM View";
+                url = urla+"all_member_last_day";
+            } else {
+                document.getElementById("view").innerHTML = "AM View";
+                url= urla+"am_all_view?uid="+localStorage.getItem("role_name");
+            }
+            $.ajax({
+                url: url,
+                type: "get",
+                headers: {
+                    "Authorization": localStorage.getItem("token")
+                },
+                success: function (result) {
+
+                    $('#loader').hide();
+                    jsonObj = [];
+                    result.query1.forEach(function (i) {
+                        var am_id = $(this).attr("am_id");
+                        var tl_id = $(this).attr("tl_id");
+                        var tl_name = $(this).attr("tl_name");
+                        var fa_id = $(this).attr("fa_id");
+                        var fa_name = $(this).attr("fa_name");
+                        var status = $(this).attr("status");
+                        var date = $(this).attr("date");
+                        item = {}
+                        item["am_id"] = i[0];
+                        item["tl_id"] = i[1];
+                        item["tl_name"] = "";
+                        item["fa_id"] = i[2];
+                        item["fa_name"] = i[3];
+                        item["status"] = i[4];
+                        item["date"] = "";
+                        jsonObj.push(item);
+                    });
+
+
+                    jsonObj.map((a) => {
+                        let match = result.query2.find((e) => e[1] === a.fa_id);
+                        if (match) {
+                            a.date = match[0]
+                            // console.log(typeof (a.date));
+                        } else {
+                            a.date = "0"
+                        }
+                    });
+
+                    jsonObj.map((b) => {
+
+                        let match = result.query4.find((e) => e[0] === b.tl_id);
+                        if (match) {
+
+                            b.tl_name = match[1];
+                        } else {
+                            b.tl_name = "null";
+                        }
+                    });
+                    data()
+                }
+            })
+        }
+        all();
+
+
+
+        function data() {
+            jsonObj.forEach((c) => {
+                const columnsDta = `<td>${c.am_id}</td>
+        <td>${c.tl_id}</td>
+        <td><a href="./index.html" id=${c.tl_id} onclick="tl(${c.tl_id})" style="text-decoration:none">${c.tl_name}</a></td>
+        <td>${c.fa_id}</td>
+        <td><a  id=${c.fa_id}  onclick="fa(${c.fa_id})" style="text-decoration:none;cursor:pointer">${c.fa_name}</a></td>
+        <td>${c.status}</td>
+        <td>${c.date}</td>
+`;
+                const tableRow = document.createElement("tr");
+                tableRow.innerHTML = columnsDta;
+                document.querySelector("#all_table").appendChild(tableRow);
+            });
+            sortTable();
+        }
+
+        function tl(id) {
+            // console.log(id[0].id);
+            localStorage.setItem("uid", id[0].id);
+        }
+        function fa(a) {
+            // console.log(a.id);
+            localStorage.setItem("fa_id", a.id);
+            $.ajax({
+                url:  urla+'fa_to_tl?uid=' + a.id,
+                type: "get",
+                headers: {
+                    "Authorization": localStorage.getItem("token")
+                },
+                success: function (result) {
+                    // console.log(result[0]);
+                    localStorage.setItem("uid", result[0]);
+                    window.location.replace("./fa_summary_view.html")
+                }
+            })
+
+        }
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                // console.log(value);
+                $("#all_table tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+    <script>
+        function sortTable() {
+            // console.log("hi");
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("all_table_view1");
+            switching = true;
+            /*Make a loop that will continue until
+            no switching has been done:*/
+            while (switching) {
+                //start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /*Loop through all table rows (except the
+                first, which contains table headers):*/
+                for (i = 1; i < (rows.length - 1); i++) {
+                    //start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /*Get the two elements you want to compare,
+                    one from current row and one from the next:*/
+                    x = rows[i].getElementsByTagName("TD")[6];
+                    y = rows[i + 1].getElementsByTagName("TD")[6];
+                    //ch-eck if the two rows should switch place:
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.setItem("token", null);
+            window.location.reload();
+        }
+    </script>
+</body>
+
+</html>

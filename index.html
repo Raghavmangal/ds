@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="shortcut icon" href="survey.png" type="image/x-icon" />
+    <title>Survey Dashboard</title>
+    <script>
+        function a() {
+            if (localStorage.getItem("token") == "" || localStorage.getItem("token") == null || localStorage.getItem(
+                    "token") == undefined || localStorage.getItem("token") == "null") {
+                window.location.replace("login.html");
+            }
+        }
+        a();
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><b>Survey Dashboard</b></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="d-flex ms-auto me-auto">
+                    <p class="text-center">
+                        <a href="all_view.html" accesskey="a" style="text-decoration: none;
+                margin-right: 20px;
+                font-size: 18px;
+                color: black;
+                border: 1px solid #f1f1f1;
+                padding: 9px;">ALL View</a>
+                        <a href="sam.html" style="text-decoration: none;
+                margin-right: 20px;
+                font-size: 18px;
+                color: black;
+                border: 1px solid #f1f1f1;
+                padding: 9px;" accesskey="s" id="view">SAM View</a>
+                    </p>
+                </div>
+                <h6 class="logout" onclick="logout()" style="cursor: pointer;">Logout</h6>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <h6 class="m-3" style="float: left;">TL Name : <span id="tl_name" style="color:blue"></span></h6>
+            </div>
+            <div class="col-4">
+                <h6 class="m-3" style="float:left">Team Id : <span id="team_id" style="color:blue"></span></h6>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container mt-2">
+        <div class="table-responsive">
+            <table class="table text-center" style="box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%);">
+                <!-- <h5 class="m-3" style="float:right"><a href="team_view.html">Team View</a></h5> -->
+                <thead class="" style="background-color: #e7f1ff;color: #0c63e4;" id="fa_perform_table">
+                    <tr>
+                        <th scope="col">FA Id </th>
+                        <th scope="col">FA Name</th>
+                        <th scope="col">Active</th>
+                        <th scope="col">Total active days</th>
+                        <th scope="col">Total samples </th>
+                        <th scope="col">Valid samples </th>
+                        <th scope="col">Today's samples</th>
+                        <th scope="col">Today's First record</th>
+                        <th scope="col">Today's last record</th>
+                    </tr>
+                </thead>
+                <tbody id="fa_table">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="container mt-3">
+        Select Date:
+        <div id="reportrange"
+            style="background: #fff; cursor: pointer; padding: 5px 10px; border: 3px solid #ccc;width:30% ">
+
+            <i class="fa fa-calendar"></i>&nbsp;
+            <span></span> <i class="fa fa-caret-down"></i>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <div class="row" id="caste_cut_table">
+            <div class="col-md-12">
+                <h4 class="m-2">Caste Category</h4>
+                <div class="table-responsive">
+                    <table class="table text-center" style="box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%)">
+                        <thead class="" style="background-color: #e7f1ff; color: #0c63e4">
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">AC Name</th>
+                                <th scope="col">Jatav</th>
+                                <th scope="col">Non Jatav SC</th>
+                                <th scope="col">Others</th>
+                                <th scope="col">Non Yadav OBC</th>
+                                <th scope="col">General</th>
+                                <th scope="col">Yadav</th>
+                                <th scope="col">Muslim</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="caste_cut_body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="age_cut_table">
+            <div class="col-md-12">
+                <h4 class="m-2">Age</h4>
+                <div class="table-responsive">
+                    <table class="table text-center" style="box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%)">
+                        <thead class="" style="background-color: #e7f1ff; color: #0c63e4">
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">AC Name</th>
+
+                                <th scope="col">18-23</th>
+                                <th scope="col">24-35</th>
+                                <th scope="col">36-50</th>
+                                <th scope="col">51-60</th>
+                                <th scope="col">60+</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="age_cut_body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="gender_cut_table">
+            <div class="col-md-12">
+                <h4 class="m-2">Gender</h4>
+                <div class="table-responsive">
+                    <table class="table text-center" style="box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%)">
+                        <thead class="" style="background-color: #e7f1ff; color: #0c63e4">
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">AC Name</th>
+                                <th scope="col">Male</th>
+                                <th scope="col">Female</th>
+                                <th scope="col">Others</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gender_cut_body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3" id="call_duration_table">
+            <div class="col-md-12">
+                <h4 class="m-2">Call Duration</h4>
+                <div class="table-responsive">
+                    <table class="table text-center" style="box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%)">
+                        <thead class="" style="background-color: #e7f1ff; color: #0c63e4">
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">
+                                    <4 </th> <th scope="col">4-5
+                                </th>
+                                <th scope="col">5-8</th>
+                                <th scope="col">8-10</th>
+                                <th scope="col">10+</th>
+                                <th scope="col">Total</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="call_duration_body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3" id="call_duration_table">
+            <div class="col-md-12">
+                <h4 class="m-2">Avg Time Duration </h4>
+                <div class="table-responsive">
+                    <table class="table text-center" style="box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%)">
+                        <thead class="" style="background-color: #e7f1ff; color: #0c63e4">
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">8-10am</th>
+                                <th scope="col">10-12am</th>
+                                <th scope="col">12-2pm</th>
+                                <th scope="col">2-4pm</th>
+                                <th scope="col">4-6pm</th>
+                                <th scope="col">6-8pm</th>
+                                <th scope="col">Total</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="avg_timing_body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+        var urla = "";
+
+        function b() {
+            // console.log(window.location.href.charAt(7));
+            if (window.location.href.charAt(8) == 3) {
+                urla = "https://35.154.142.248/";
+            } else {
+                urla = 'https://shielded-forest-68279.herokuapp.com/'
+            }
+            if (localStorage.getItem("role_id") == 4) {
+                document.getElementById("view").innerHTML = "SAM View"
+            } else {
+                document.getElementById("view").innerHTML = "AM View"
+            }
+            var f = localStorage.getItem("uid");
+            $.ajax({
+                url: urla + 'api/v1/_team_mem_active?uid=' + f,
+                type: "get",
+                headers: {
+                    "Authorization": localStorage.getItem("token")
+                },
+                success: function (r) {
+                    // console.log(r);
+                    $.ajax({
+                        url: urla + 'api/v1/_fa_performance?uid=' + f,
+                        type: "get",
+                        headers: {
+                            "Authorization": localStorage.getItem("token")
+                        },
+                        success: function (result) {
+                            // console.log(result.fa_results);
+                            document.getElementById("tl_name").innerHTML = result.tl_name;
+                            document.getElementById("team_id").innerHTML = result.tl_id;
+                            var a = '';
+                            var s = 0;
+                            var d = 0;
+                            var f = 0;
+                            var g = 0;
+                            for (i = 0; i < result.faids.length; i++) {
+
+                                if (result.fa_results[i].length == 2) {
+                                    var q = (result.fa_results[i][1][0] / result.fa_results[i][
+                                        0
+                                    ][0]) * 100;
+                                    var w = Math.floor(q);
+                                    a += '<tr><td>' + result.faids[i][0] + '</td><td><p id="' +
+                                        result.faids[i][0] + '"  name="' + result.faids[i][1] +
+                                        '"  onclick="fa_gender(id,name)" style="cursor: pointer !important;color:blue">' +
+                                        result.faids[i][1] + '</p></td><td>' + r.fa_ids[i][1] +
+                                        '</td><td>' + result.fa_results[i][0][1] + '</td><td>' +
+                                        result.fa_results[i][0][0] + '</td><td> ' + result
+                                        .fa_results[i][1][0] + '  (' + w +
+                                        '%)</td><td>null</td><td>null</td><td>' + result
+                                        .fa_results[i][1][1] + '</td></tr>'
+                                } else if (result.fa_results[i].length == 4) {
+                                    var q = (result.fa_results[i][3][0] / result.fa_results[i][
+                                        0
+                                    ][0]) * 100;
+                                    var w = Math.floor(q);
+                                    s += parseInt(result.fa_results[i][0][1]);
+                                    d += result.fa_results[i][0][0];
+                                    f += result.fa_results[i][3][0];
+                                    g += result.fa_results[i][1][0];
+
+                                    a += '<tr><td>' + result.faids[i][0] + '</td><td><p id="' +
+                                        result.faids[i][0] + '"  name="' + result.faids[i][1] +
+                                        '"  onclick="fa_gender(id,name)" style="cursor: pointer !important;color:blue">' +
+                                        result.faids[i][1] + '</p></td><td>' + r.fa_ids[i][1] +
+                                        '</td><td>' + result.fa_results[i][0][1] + '</td><td>' +
+                                        result.fa_results[i][0][0] + '</td><td>' + result
+                                        .fa_results[i][3][0] + '  (' + w + '%)</td><td>' +
+                                        result.fa_results[i][1][0] + '</td><td>' + result
+                                        .fa_results[i][2][1] + '</td><td>' + result.fa_results[
+                                            i][1][1] + '</td></tr>'
+                                }
+
+                            }
+                            var t = Math.floor((f / d) * 100);
+                            a += '<tr style="background-color:#d1d1d1"><td>Total</td><td></td><td></td><td>' +
+                                s + '</td><td>' + d + '</td><td>' + f + '  (' + t +
+                                '%)</td><td>' + g + '</td><td></td><td></td></tr>'
+                            document.getElementById("fa_table").innerHTML = a;
+                        }
+                    })
+                }
+            })
+        }
+        b();
+
+        function logout() {
+            localStorage.setItem("token", "");
+            window.location.reload();
+        }
+
+        function fa_gender(id) {
+
+            localStorage.setItem("fa_id", id);
+            window.location.replace("./fa_summary_view.html");
+        }
+    </script>
+    <script type="text/javascript">
+        var s = "";
+        var e = "";
+        var f = localStorage.getItem("uid");
+        $(function () {
+            var start = moment();
+            var end = moment();
+            s = start.format('YYYY-MM-DD');
+            e = end.format('YYYY-MM-DD')
+
+            function cb(start, end) {
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+                s = start.format('YYYY-MM-DD');
+                e = end.format('YYYY-MM-DD');
+                cuts();
+            }
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                        'month').endOf('month')]
+                }
+            }, cb);
+            cb(start, end);
+
+        });
+
+
+
+        // cuts script
+
+        function cuts() {
+            $.ajax({
+                url: urla + 'api/v1/_tl_view/caste_cut?start_date=' + s +
+                    '&end_date=' + e + '&uid=' + f,
+                type: "get",
+                headers: {
+                    "Authorization": localStorage.getItem("token")
+                },
+                success: function (result) {
+                    // console.log(result);
+                    var a = '';
+                    var s = 0;
+                    var d = 0;
+                    var f = 0;
+                    var g = 0;
+                    var h = 0;
+                    var j = 0;
+                    var k = 0;
+                    var l = 0;
+                    if (result.query.length == 0) {
+                        a += `<tr><td>Null</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td><td>0</td><td>0</td><td>0</td></tr>`;
+                    } else {
+                        for (i = 0; i < result.query.length; i++) {
+                            s += result.query[i][0];
+                            d += result.query[i][1];
+                            f += result.query[i][2];
+                            g += result.query[i][3];
+                            h += result.query[i][4];
+                            j += result.query[i][5];
+                            k += result.query[i][6];
+                            l += result.query[i][7];
+                            a += '<tr><td>' + result.query[i][9] +
+                                '</td><td>' + result.query[i][
+                                    8
+                                ] + '</td><td>' + result.query[i][0] + '</td><td>' + result.query[i][
+                                    1
+                                ] +
+                                '</td><td>' + result.query[i][2] + '</td><td>' + result.query[i][
+                                    3
+                                ] +
+                                '</td><td>' + result.query[i][4] + '</td><td>' + result.query[i][5] +
+                                '</td><td>' + result.query[i][6] + '</td><td>' + result.query[i][7] +
+                                '</td></tr>';
+                        }
+                        a += '<tr style="background-color:#d1d1d1"><td>Total</td><td></td><td>' + s +
+                            '  (' + Math.floor((s / l) * 100) + '%)</td><td>' + d + '  (' + Math.floor((d /
+                                l) * 100) + '%)</td><td>' + f + '  (' + Math.floor((f / l) * 100) +
+                            '%)</td><td>' + g + '  (' + Math.floor((g / l) * 100) + '%)</td><td>' + h +
+                            '  (' + Math.floor((h / l) * 100) + '%)</td><td>' + j + '  (' + Math.floor((j /
+                                l) * 100) + '%)</td><td>' + k + '  (' + Math.floor((k / l) * 100) +
+                            '%)</td><td>' + l + '</td></tr>'
+                    }
+                    document.getElementById("caste_cut_body").innerHTML = a;
+                }
+            })
+
+            $.ajax({
+                url: urla + 'api/v1/_tl_view/age_cut?start_date=' +
+                    s + '&end_date=' + e + '&uid=' + f,
+                type: "get",
+                headers: {
+                    "Authorization": localStorage.getItem("token")
+                },
+                success: function (result) {
+                    var a = '';
+                    var s = 0;
+                    var d = 0;
+                    var f = 0;
+                    var g = 0;
+                    var h = 0;
+                    var l = 0;
+
+                    if (result.query.length == 0) {
+                        a += `<tr>
+                            <td>Null</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            </tr>`;
+                    } else {
+                        for (i = 0; i < result.query.length; i++) {
+                            s += result.query[i][0];
+                            d += result.query[i][1];
+                            f += result.query[i][2];
+                            g += result.query[i][3];
+                            h += result.query[i][4];
+                            l += result.query[i][5];
+                            a += '<tr><td>' + result.query[i][7] + '</td><td>' + result.query[i][6] +
+                                '</td><td>' + result.query[i][0] +
+                                '</td><td>' + result.query[i][
+                                    1
+                                ] +
+                                '</td><td>' + result.query[i][2] + '</td><td>' + result.query[i][
+                                    3
+                                ] +
+                                '</td><td>' + result.query[i][4] + '</td><td>' + result.query[i][
+                                    5
+                                ] + '</td></tr>';
+
+                        }
+                        a += '<tr style="background-color:#d1d1d1"><td>Total</td><td></td><td>' + s +
+                            '  (' + Math.floor((s / l) * 100) + '%)</td><td>' + d + '  (' + Math.floor((d /
+                                l) * 100) + '%)</td><td>' + f + '  (' + Math.floor((f / l) * 100) +
+                            '%)</td><td>' + g + '  (' + Math.floor((g / l) * 100) + '%)</td><td>' + h +
+                            '  (' + Math.floor((h / l) * 100) + '%)</td><td>' + l + '</td></tr>'
+                    }
+
+                    document.getElementById("age_cut_body").innerHTML = a;
+                }
+            })
+
+            $.ajax({
+                url: urla + 'api/v1/_tl_view/gender_cut?start_date=' +
+                    s + '&end_date=' + e + '&uid=' + f,
+                type: "get",
+                headers: {
+                    "Authorization": localStorage.getItem("token")
+                },
+                success: function (result) {
+
+                    var a = '';
+                    var s = 0;
+                    var d = 0;
+                    var f = 0;
+                    var l = 0;
+                    if (result.query.length == 0) {
+                        a += '<tr><td>Null</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>';
+                    } else {
+                        for (i = 0; i < result.query.length; i++) {
+                            s += result.query[i][0];
+                            d += result.query[i][1];
+                            f += result.query[i][2];
+                            l += result.query[i][3];
+                            a += '<tr><td>' + result.query[i][
+                                    5
+                                ] + '</td><td>' + result.query[i][4] + '</td><td>' + result.query[i][0] +
+                                '</td><td>' + result.query[i][
+                                    1
+                                ] +
+                                '</td><td>' + result.query[i][2] + '</td><td>' + result.query[i][
+                                    3
+                                ] +
+                                '</td></tr>';
+                        }
+
+                        a += '<tr style="background-color:#d1d1d1"><td>Total</td><td></td><td>' + s +
+                            '  (' + Math.floor((s / l) * 100) + '%)</td><td>' + d + '  (' + Math.floor((d /
+                                l) * 100) + '%)</td><td>' + f + '  (' + Math.floor((f / l) * 100) +
+                            '%)</td><td>' + l + '</td></tr>'
+                    }
+                    document.getElementById("gender_cut_body").innerHTML = a;
+                }
+            })
+
+            $.ajax({
+                url: urla + 'api/v1/_tl_view/callduration?start_date=' +
+                    s + '&end_date=' + e + '&uid=' + f,
+                type: "get",
+                headers: {
+                    "Authorization": localStorage.getItem("token")
+                },
+                success: function (result) {
+                    // console.log(result);
+                    var a = '';
+                    var s = 0;
+                    var d = 0;
+                    var f = 0;
+                    var g = 0;
+                    var h = 0;
+                    var l = 0;
+                    if (result.length == 0) {
+                        a +=
+                            '<tr><td>Null</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>';
+                    } else {
+                        for (i = 0; i < result.length; i++) {
+                            s += result[i][0];
+                            d += result[i][1];
+                            f += result[i][2];
+                            g += result[i][3];
+                            h += result[i][4];
+                            l += result[i][5];
+                            a += '<tr><td>' + result[i][
+                                    6
+                                ] + '</td><td>' + result[i][0] + '</td><td>' + result[i][1] +
+                                '</td><td>' + result[i][
+                                    2
+                                ] +
+                                '</td><td>' + result[i][3] + '</td><td>' + result[i][
+                                    4
+                                ] +
+                                '</td><td>' + result[i][
+                                    5
+                                ] +
+                                '</td></tr>';
+                        }
+                        a += '<tr style="background-color:#d1d1d1"><td>Total</td><td>' + s +
+                            '  (' + Math.floor((s / l) * 100) + '%)</td><td>' + d + '  (' + Math.floor((d /
+                                l) * 100) + '%)</td><td>' + f + '  (' + Math.floor((f / l) * 100) +
+                            '%)</td><td>' + g + '  (' + Math.floor((g / l) * 100) + '%)</td><td>' + h +
+                            '  (' + Math.floor((h / l) * 100) + '%)</td><td>' + l + '</td></tr>'
+                    }
+                    document.getElementById("call_duration_body").innerHTML = a;
+                }
+            })
+            $.ajax({
+                url: urla + 'api/v1/_tl_view/submittime?start_date=' +
+                    s + '&end_date=' + e + '&uid=' + f,
+                type: "get",
+                headers: {
+                    "Authorization": localStorage.getItem("token")
+                },
+                success: function (result) {
+                    // console.log(result);
+                    var a = '';
+                    var b = '';
+                    var s = 0;
+                    var d = 0;
+                    var f = 0;
+                    var g = 0;
+                    var h = 0;
+                    var j = 0;
+                    var l = 0;
+
+                    if (result.length == 0) {
+                        a +=
+                            '<tr><td>Null</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>';
+                    } else {
+                        for (i = 0; i < result.length; i++) {
+                            b = result[i][0] + result[i][1] + result[i][2] + result[i][3] + result[i][
+                                4
+                            ] + result[i][5];
+
+                            s += result[i][0];
+                            d += result[i][1];
+                            f += result[i][2];
+                            g += result[i][3];
+                            h += result[i][4];
+                            h += result[i][5];
+                            l += b;
+                            a += '<tr><td>' + result[i][
+                                    7
+                                ] + '</td><td>' + result[i][0] + '</td><td>' + result[i][1] +
+                                '</td><td>' + result[i][
+                                    2
+                                ] +
+                                '</td><td>' + result[i][3] + '</td><td>' + result[i][
+                                    4
+                                ] +
+                                '</td><td>' + result[i][
+                                    5
+                                ] +
+                                '</td><td>' + b +
+                                '</td></tr>';
+                        }
+                        a += '<tr style="background-color:#d1d1d1"><td>Total</td><td>' + s +
+                            '  (' + Math.floor((s / l) * 100) + '%)</td><td>' + d + '  (' + Math.floor((d /
+                                l) * 100) + '%)</td><td>' + f + '  (' + Math.floor((f / l) * 100) +
+                            '%)</td><td>' + g + '  (' + Math.floor((g / l) * 100) + '%)</td><td>' + h +
+                            '  (' + Math.floor((h / l) * 100) + '%)</td><td>' + j +
+                            '  (' + Math.floor((j / l) * 100) + '%)</td><td>' + l + '</td></tr>'
+                    }
+                    document.getElementById("avg_timing_body").innerHTML = a;
+                }
+            })
+        };
+
+        cuts();
+    </script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row mt-5">
+         
+            <div class="offset-md-4 col-md-4 p-5" style="background-color: #f1f1f1;border-radius: 10px;" >
+                <h4 class="text-center p-3" >Login</h4>
+                    <form id="my_form">
+                        <div class="mb-3">
+                          <label for="exampleInputEmail1" class="form-label">Username</label>
+                          <input type="text" class="form-control" id="uid" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleInputPassword1" class="form-label">Password</label>
+                          <input type="password" class="form-control" id="password">
+                        </div>
+                        <p id="errormsglogin" style="display:none;color:red">Invalid uid or password</p>
+                        <center><button type="submit" class="btn btn-primary ml-auto mr-auto">Submit</button></center>
+                      </form>
+            </div>
+        </div>
+
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
+        
+
+        <!-- Option 2: Separate Popper and Bootstrap JS -->
+        <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+    <script>
+  var urla="";
+        function b() {
+            console.log(window.location.href.charAt(8));
+      if (window.location.href.charAt(8) === 3) {
+        urla = "https://35.154.142.248/";
+      } else {
+        urla =  'https://shielded-forest-68279.herokuapp.com/'
+      }
+}
+
+          $("#my_form").submit(function (event) {
+            event.preventDefault();
+            let fd = new FormData();
+            fd.append("uid", $("#uid").val());
+            fd.append("password", $("#password").val());
+           
+            $.ajax({
+                url:  urla+'api/v1/login',
+                type: "POST",
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    if(result.error == "Invalid uid or password" ){
+                        $("#errormsglogin").show();
+                    }
+                    else{
+                        // console.log(result)
+                        localStorage.setItem("role_name", result.user.uid);
+                        localStorage.setItem("token", result.token);
+                        localStorage.setItem("role_id", result.user.role_id);
+                        localStorage.setItem("uid", result.user.uid);
+                        if(result.user.role_id == 2){
+                            window.location.replace("./team_view.html");
+                        }
+                        else if(result.user.role_id == 3){
+                            
+                            window.location.replace("./am.html");
+                        }
+                        else if(result.user.role_id == 4){
+                            window.location.replace("./sam.html");
+                        }
+                    }
+                 
+                }
+            })
+        });
+    </script>
+</body>
+
+</html>
